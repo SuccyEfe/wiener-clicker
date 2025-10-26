@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WIENER CLICKER</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body{margin:0;background:#ffe6cc;color:#d35400;font-family:'Comic Sans MS',sans-serif;text-align:center;overflow:hidden;}
+    h1{font-size:36px;margin:20px;text-shadow:2px 2px 4px rgba(0,0,0,0.2);}
+    #wiener{width:180px;height:180px;margin:30px auto;background:#e67e22;border-radius:50% 50% 45% 45%/60% 60% 40% 40%;box-shadow:0 8px 16px rgba(0,0,0,0.2);cursor:pointer;user-select:none;transition:transform .1s;position:relative;}
+    #wiener:active{transform:scale(0.92);}
+    #wiener::before{content:"🌭";font-size:90px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
+    #score{font-size:42px;font-weight:bold;margin:20px;}
+    #particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;}
+    @keyframes float{to{transform:translateY(-100vh) rotate(360deg);opacity:0;}}
+  </style>
+</head>
+<body>
+  <h1>🌭 WIENER CLICKER 🌭</h1>
+  <div id="score">Wieners: 0</div>
+  <div id="wiener" onclick="clickWiener()"></div>
+  <div id="particles"></div>
+  <script>
+    let wieners=0;const s=document.getElementById('score'),w=document.getElementById('wiener'),p=document.getElementById('particles');
+    Telegram.WebApp.CloudStorage.getItem('wieners',(e,v)=>{if(v){wieners=parseInt(v);u();}});
+    function clickWiener(){wieners++;u();c();Telegram.WebApp.HapticFeedback.impactOccurred('medium');Telegram.WebApp.CloudStorage.setItem('wieners',wieners.toString());}
+    function u(){s.innerText=`Wieners: ${wieners.toLocaleString()}`;}
+    function c(){const e=document.createElement('div');e.innerText='🌭';e.style.position='absolute';e.style.left=Math.random()*100+'vw';e.style.top='70vh';e.style.fontSize='24px';e.style.animation='float 1s ease-out forwards';p.appendChild(e);setTimeout(()=>e.remove(),1000);}
+    Telegram.WebApp.ready();Telegram.WebApp.expand();
+  </script>
+</body>
+</html>
